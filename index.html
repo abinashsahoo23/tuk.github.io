@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Daily Todo Tracker</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        #taskInput {
+            width: 70%;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        .task-item {
+            background: white;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .completed {
+            background-color: #d4edda;
+            text-decoration: line-through;
+        }
+        .stats {
+            margin-top: 20px;
+            padding: 15px;
+            background: white;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Daily Todo List 📅</h2>
+        <input type="text" id="taskInput" placeholder="Enter new task...">
+        <button onclick="addTask()">Add Task</button>
+        
+        <div id="taskList"></div>
+        
+        <div class="stats">
+            <h3>Daily Summary</h3>
+            <p id="dateDisplay"></p>
+            <p>Total Tasks: <span id="totalTasks">0</span></p>
+            <p>Completed: <span id="completedTasks">0</span></p>
+            <p>Remaining: <span id="remainingTasks">0</span></p>
+        </div>
+    </div>
+
+    <script>
+        // Initialize with today's date
+        const today = new Date();
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        document.getElementById('dateDisplay').textContent = today.toLocaleDateString('en-US', options);
+
+        // Load tasks from localStorage
+        let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+        
+        function saveTasks() {
+            localStorage.setItem('tasks', JSON.stringify(tasks));
+            updateStats();
+            displayTasks();
+        }
+
+        function addTask() {
+            const taskInput = document.getElementById('taskInput');
+            if (taskInput.value.trim() === '') return;
+            
+            tasks.push({
+                text: taskInput.value,
+                completed: false,
+                date: today.toISOString().split('T')[0]
+            });
+            
+            taskInput.value = '';
+            saveTasks();
+        }
+
+        function toggleTask(index) {
+            tasks[index].completed = !tasks[index].completed;
+            saveTasks();
+        }
+
+        function deleteTask(index) {
+            tasks.splice(index, 1);
+            saveTasks();
+        }
+
+        function updateStats() {
+            document.getElementById('totalTasks').textContent = tasks.length;
+            document.getElementById('completedTasks').textContent = 
+                tasks.filter(task => task.completed).length;
+            document.getElementById('remainingTasks').textContent = 
+                tasks.filter(task => !task.completed).length;
+        }
+
+        function displayTasks() {
+            const taskList = document.getElementById('taskList');
+            taskList.innerHTML = tasks.map((task, index) => `
+                <div class="task-item ${task.completed ? 'completed' : ''}">
+                    <span onclick="toggleTask(${index})">${task.text}</span>
+                    <button onclick="deleteTask(${index})">×</button>
+                </div>
+            `).join('');
+        }
+
+        // Initial display
+        displayTasks();
+        updateStats();
+    </script>
+</body>
+  </html><!DOCTYPE html>
+<html>
+<head>
+    <title>Daily Todo Tracker</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        #taskInput {
+            width: 70%;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        .task-item {
+            background: white;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .completed {
+            background-color: #d4edda;
+            text-decoration: line-through;
+        }
+        .stats {
+            margin-top: 20px;
+            padding: 15px;
+            background: white;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Daily Todo List 📅</h2>
+        <input type="text" id="taskInput" placeholder="Enter new task...">
+        <button onclick="addTask()">Add Task</button>
+        
+        <div id="taskList"></div>
+        
+        <div class="stats">
+            <h3>Daily Summary</h3>
+            <p id="dateDisplay"></p>
+            <p>Total Tasks: <span id="totalTasks">0</span></p>
+            <p>Completed: <span id="completedTasks">0</span></p>
+            <p>Remaining: <span id="remainingTasks">0</span></p>
+        </div>
+    </div>
+
+    <script>
+        // Initialize with today's date
+        const today = new Date();
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        document.getElementById('dateDisplay').textContent = today.toLocaleDateString('en-US', options);
+
+        // Load tasks from localStorage
+        let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+        
+        function saveTasks() {
+            localStorage.setItem('tasks', JSON.stringify(tasks));
+            updateStats();
+            displayTasks();
+        }
+
+        function addTask() {
+            const taskInput = document.getElementById('taskInput');
+            if (taskInput.value.trim() === '') return;
+            
+            tasks.push({
+                text: taskInput.value,
+                completed: false,
+                date: today.toISOString().split('T')[0]
+            });
+            
+            taskInput.value = '';
+            saveTasks();
+        }
+
+        function toggleTask(index) {
+            tasks[index].completed = !tasks[index].completed;
+            saveTasks();
+        }
+
+        function deleteTask(index) {
+            tasks.splice(index, 1);
+            saveTasks();
+        }
+
+        function updateStats() {
+            document.getElementById('totalTasks').textContent = tasks.length;
+            document.getElementById('completedTasks').textContent = 
+                tasks.filter(task => task.completed).length;
+            document.getElementById('remainingTasks').textContent = 
+                tasks.filter(task => !task.completed).length;
+        }
+
+        function displayTasks() {
+            const taskList = document.getElementById('taskList');
+            taskList.innerHTML = tasks.map((task, index) => `
+                <div class="task-item ${task.completed ? 'completed' : ''}">
+                    <span onclick="toggleTask(${index})">${task.text}</span>
+                    <button onclick="deleteTask(${index})">×</button>
+                </div>
+            `).join('');
+        }
+
+        // Initial display
+        displayTasks();
+        updateStats();
+    </script>
+</body>
+  </html><!DOCTYPE html>
+<html>
+<head>
+    <title>Daily Todo Tracker</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        #taskInput {
+            width: 70%;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        .task-item {
+            background: white;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .completed {
+            background-color: #d4edda;
+            text-decoration: line-through;
+        }
+        .stats {
+            margin-top: 20px;
+            padding: 15px;
+            background: white;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Daily Todo List 📅</h2>
+        <input type="text" id="taskInput" placeholder="Enter new task...">
+        <button onclick="addTask()">Add Task</button>
+        
+        <div id="taskList"></div>
+        
+        <div class="stats">
+            <h3>Daily Summary</h3>
+            <p id="dateDisplay"></p>
+            <p>Total Tasks: <span id="totalTasks">0</span></p>
+            <p>Completed: <span id="completedTasks">0</span></p>
+            <p>Remaining: <span id="remainingTasks">0</span></p>
+        </div>
+    </div>
+
+    <script>
+        // Initialize with today's date
+        const today = new Date();
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        document.getElementById('dateDisplay').textContent = today.toLocaleDateString('en-US', options);
+
+        // Load tasks from localStorage
+        let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+        
+        function saveTasks() {
+            localStorage.setItem('tasks', JSON.stringify(tasks));
+            updateStats();
+            displayTasks();
+        }
+
+        function addTask() {
+            const taskInput = document.getElementById('taskInput');
+            if (taskInput.value.trim() === '') return;
+            
+            tasks.push({
+                text: taskInput.value,
+                completed: false,
+                date: today.toISOString().split('T')[0]
+            });
+            
+            taskInput.value = '';
+            saveTasks();
+        }
+
+        function toggleTask(index) {
+            tasks[index].completed = !tasks[index].completed;
+            saveTasks();
+        }
+
+        function deleteTask(index) {
+            tasks.splice(index, 1);
+            saveTasks();
+        }
+
+        function updateStats() {
+            document.getElementById('totalTasks').textContent = tasks.length;
+            document.getElementById('completedTasks').textContent = 
+                tasks.filter(task => task.completed).length;
+            document.getElementById('remainingTasks').textContent = 
+                tasks.filter(task => !task.completed).length;
+        }
+
+        function displayTasks() {
+            const taskList = document.getElementById('taskList');
+            taskList.innerHTML = tasks.map((task, index) => `
+                <div class="task-item ${task.completed ? 'completed' : ''}">
+                    <span onclick="toggleTask(${index})">${task.text}</span>
+                    <button onclick="deleteTask(${index})">×</button>
+                </div>
+            `).join('');
+        }
+
+        // Initial display
+        displayTasks();
+        updateStats();
+    </script>
+</body>
+</html><!DOCTYPE html>
+<html>
+<head>
+    <title>Daily Todo Tracker</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        #taskInput {
+            width: 70%;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        .task-item {
+            background: white;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .completed {
+            background-color: #d4edda;
+            text-decoration: line-through;
+        }
+        .stats {
+            margin-top: 20px;
+            padding: 15px;
+            background: white;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Daily Todo List 📅</h2>
+        <input type="text" id="taskInput" placeholder="Enter new task...">
+        <button onclick="addTask()">Add Task</button>
+        
+        <div id="taskList"></div>
+        
+        <div class="stats">
+            <h3>Daily Summary</h3>
+            <p id="dateDisplay"></p>
+            <p>Total Tasks: <span id="totalTasks">0</span></p>
+            <p>Completed: <span id="completedTasks">0</span></p>
+            <p>Remaining: <span id="remainingTasks">0</span></p>
+        </div>
+    </div>
+
+    <script>
+        // Initialize with today's date
+        const today = new Date();
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        document.getElementById('dateDisplay').textContent = today.toLocaleDateString('en-US', options);
+
+        // Load tasks from localStorage
+        let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+        
+        function saveTasks() {
+            localStorage.setItem('tasks', JSON.stringify(tasks));
+            updateStats();
+            displayTasks();
+        }
+
+        function addTask() {
+            const taskInput = document.getElementById('taskInput');
+            if (taskInput.value.trim() === '') return;
+            
+            tasks.push({
+                text: taskInput.value,
+                completed: false,
+                date: today.toISOString().split('T')[0]
+            });
+            
+            taskInput.value = '';
+            saveTasks();
+        }
+
+        function toggleTask(index) {
+            tasks[index].completed = !tasks[index].completed;
+            saveTasks();
+        }
+
+        function deleteTask(index) {
+            tasks.splice(index, 1);
+            saveTasks();
+        }
+
+        function updateStats() {
+            document.getElementById('totalTasks').textContent = tasks.length;
+            document.getElementById('completedTasks').textContent = 
+                tasks.filter(task => task.completed).length;
+            document.getElementById('remainingTasks').textContent = 
+                tasks.filter(task => !task.completed).length;
+        }
+
+        function displayTasks() {
+            const taskList = document.getElementById('taskList');
+            taskList.innerHTML = tasks.map((task, index) => `
+                <div class="task-item ${task.completed ? 'completed' : ''}">
+                    <span onclick="toggleTask(${index})">${task.text}</span>
+                    <button onclick="deleteTask(${index})">×</button>
+                </div>
+            `).join('');
+        }
+
+        // Initial display
+        displayTasks();
+        updateStats();
+    </script>
+</body>
+</html>
